@@ -7,9 +7,12 @@
 </head>
 <body>
     
-@foreach ($pokemonData['results'] as $pokemon)
-    <h1>{{$pokemon['name']}}</h1>
-    <img src="{{$pokemon['url']}}" alt="">
+@foreach ($pokemonData as $pokemon)
+    
+    <img src="{{$pokemon['image_url']}}" alt="">
+    <p>{{$pokemon['name']}}</p>
+    <p>{{$pokemon['id']}}</p>
+    <p>{{$pokemon['efecto']}}</p>
 @endforeach
 
 </body>
