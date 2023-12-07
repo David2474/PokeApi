@@ -6,9 +6,7 @@ use App\Http\Controllers\PokemonController;
 
 Route::get('/', [PokemonController::class, 'index']);
 
+Route::get('/detalles', [PokemonController::class, 'show'])->name('detalles');
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 

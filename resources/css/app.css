@@ -4,6 +4,39 @@
 
 @layer components{
     .planta{
-        @apply bg-slate-600 text-white
+        @apply bg-[#11A846] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px] ;
+    }
+    .veneno{
+        @apply bg-[#E01A94] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .fuego{
+        @apply bg-[#FC5415] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .volador{
+        @apply bg-[#21B1E6] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .agua{
+        @apply bg-[#2183E6] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .tierra{
+        @apply bg-[#C69756] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .roca{
+        @apply bg-[#9D550D] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .vacio{
+        @apply bg-[#000000] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .default{
+        @apply bg-[#000000] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
     }
 }
