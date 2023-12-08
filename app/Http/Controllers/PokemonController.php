@@ -70,10 +70,71 @@ class PokemonController extends Controller{
         
     }     
     
+
+    // --------------------------
     
     public function show(string $id){
 
-       
+            $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$id}");
+            
+        if ($response->successful()) {
+            $pokemon = $response->json();
+
+            $pokemon['name']= strtoupper(substr($pokemon['name'], 0, 1)) . substr($pokemon['name'], 1);
+
+            // dd($pokemon);
+           // Obtener la descripción de la especie en español
+           $speciesResponse = Http::get($pokemon['species']['url']);
+
+           if($speciesResponse->successful()){
+            $speciesDetails = $speciesResponse->json();
+            $description = 'No hay una descripción disponible en español.';
+            foreach($speciesDetails['flavor_text_entries'] as $flavorTextEntry){
+                if($flavorTextEntry['language']['name'] == 'es'){
+                    $description = $flavorTextEntry['flavor_text'];
+                    break;
+                }
+            }
+           }else{
+                $description = 'No hay descripcion disponible.';
+           }
+           $types = [];
+           foreach($pokemon['types'] as $typeData){
+                $typeDetailsResponse = Http::get($typeData['type']['url']);
+                if($typeDetailsResponse->successful()){
+                    $typeDetails = $typeDetailsResponse->json();
+                    $typeNames = $typeDetails['names'];
+                    foreach($typeNames as $typeName){
+                        if($typeName['language']['name'] === 'es'){
+                            $types[] = $typeName['name'];
+                            break;
+                        }
+                        // dd($typeDetails);
+                    }
+                    // Obtener debilidades del tipo
+            $typeDamageRelations = $typeDetails['damage_relations'];
+
+            foreach ($typeDamageRelations['double_damage_from'] as $weakness) {
+                $weaknessDetailsResponse = Http::get($weakness['url']);
+
+                if ($weaknessDetailsResponse->successful()) {
+                    $weaknessDetails = $weaknessDetailsResponse->json();
+                    $weaknessNames = $weaknessDetails['names'];
+
+                    foreach ($weaknessNames as $weaknessName) {
+                        if ($weaknessName['language']['name'] === 'es') {
+                            $debilidades[] = $weaknessName['name'];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+            return view('pokemons.detalles', compact('pokemon', 'description', 'types', 'debilidades'));
+        }else{
+            return response()->json(['error'=>'No se pudo obtener información del Pokémon'], $response->status());
+        }
     }
     
 

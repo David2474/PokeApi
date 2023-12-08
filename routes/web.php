@@ -6,7 +6,11 @@ use App\Http\Controllers\PokemonController;
 
 Route::get('/', [PokemonController::class, 'index']);
 
-Route::get('/detalles', [PokemonController::class, 'show'])->name('detalles');
+Route::get('/pokemons.index', [PokemonController::class, 'index'])->name('index');
+
+
+Route::get('/detalles/{id}', [PokemonController::class, 'show'])->name('detalles');
+
 
 
 

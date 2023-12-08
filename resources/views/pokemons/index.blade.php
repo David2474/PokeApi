@@ -18,7 +18,7 @@
     
     <div class="flex justify-center flex-wrap  items-center">
         @foreach ($list as $pokemon)  
-            <a href="{{route('detalles')}}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border  hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
+            <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border  hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
             <div class="">
                 <img src="{{$pokemon['image']}}"
                     class="w-[212px] h-[212px]"
