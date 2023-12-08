@@ -10,30 +10,47 @@
 
 
     <div class="grid grid-cols-12 mt-[47px] mb-[32px]">
-        <form action="" class="col-start-2 col-span-3">
+       
+        <form id="formBuscar" action="{{ route('index') }}" method="GET" class="col-start-2 col-span-3">
             <p class="font-[geologica] text-[18px] mb-[3px] text-[#060D33]">Nombre o número</p>
-            <input class="border border-[#D1D5DB] h-[50px] w-[346px] rounded-[10px]" type="text">
+            <input name="nombre" id="nombre" required class="border border-[#D1D5DB] h-[50px] w-[346px] rounded-[10px]" type="text">
         </form>
+
     </div>
     
-    <div class="flex justify-center flex-wrap  items-center">
-        @foreach ($list as $pokemon)  
-            <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border  hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
-            <div class="">
-                <img src="{{$pokemon['image']}}"
-                    class="w-[212px] h-[212px]"
-                    alt="">
+    @if(isset($pokemon))
+    <div class="flex justify-center flex-wrap items-center" id="resultados">
+        <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
+            <div>
+                <img src="{{ $pokemon['sprites']['front_default'] }}" class="w-[212px] h-[212px]" alt="">
             </div>
             <div class="flex flex-col justify-center w-[212px]">
-                <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{$pokemon['id']}}</p>
-                <p class="first-letter:uppercase text-[22px] font-[geologica]">{{$pokemon['name']}}</p>
+                <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{ $pokemon['id'] }}</p>
+                <p class="first-letter:uppercase text-[22px] font-[geologica]">{{ $pokemon['name'] }}</p>
                 <div>
-                <x-types :pokemon="$pokemon" />
+                    <x-types :pokemon="$pokemon" />
                 </div>
             </div>
-            </a>
-        @endforeach
+        </a>
     </div>
+@endif
+
+<div class="flex justify-center flex-wrap items-center">
+    @foreach ($list as $pokemon)
+        <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
+            <div>
+                <img src="{{ $pokemon['image'] }}" class="w-[212px] h-[212px]" alt="">
+            </div>
+            <div class="flex flex-col justify-center w-[212px]">
+                <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{ $pokemon['id'] }}</p>
+                <p class="first-letter:uppercase text-[22px] font-[geologica]">{{ $pokemon['name'] }}</p>
+                <div>
+                    <x-types :pokemon="$pokemon" />
+                </div>
+            </div>
+        </a>
+    @endforeach
+</div>
 
     <!-- INICIO DE NAVEGACION -->
 

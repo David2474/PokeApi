@@ -31,6 +31,18 @@
         @apply bg-[#9D550D] font-[geologica] not-italic font-normal text-[13px] 
         text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
     }
+    .hielo{
+        @apply bg-[#9D5] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .electrico{
+        @apply bg-[#216] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .bicho{
+        @apply bg-[#FC5] font-[geologica] not-italic font-normal text-[13px] 
+        text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
     .vacio{
         @apply bg-[#000000] font-[geologica] not-italic font-normal text-[13px] 
         text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
@@ -38,5 +50,8 @@
     .default{
         @apply bg-[#000000] font-[geologica] not-italic font-normal text-[13px] 
         text-[#ffffff] p-[5px] rounded-[17px] w-[46px] h-[21px];
+    }
+    .btnDetallePokemon{
+        @apply flex items-center px-6 justify-between rounded-[30px] h-[53px] bg-[#ffffff] w-[267px];
     }
 }

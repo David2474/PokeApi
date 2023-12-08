@@ -68,7 +68,8 @@ class PokemonController extends Controller{
         return response()->json(['error' => 'No se pudo obtener información del Pokémon'], $response->status());
      }
         
-    }     
+    }    
+     
     
 
     // --------------------------
@@ -83,8 +84,11 @@ class PokemonController extends Controller{
             $pokemon['name']= strtoupper(substr($pokemon['name'], 0, 1)) . substr($pokemon['name'], 1);
 
             // dd($pokemon);
-           // Obtener la descripción de la especie en español
            $speciesResponse = Http::get($pokemon['species']['url']);
+            // obtener siguente pokemon
+            $prevPokemon = $this->getAdjacentPokemon($id, 'prev');
+            $nextPokemon = $this->getAdjacentPokemon($id, 'next');
+
 
            if($speciesResponse->successful()){
             $speciesDetails = $speciesResponse->json();
@@ -130,12 +134,48 @@ class PokemonController extends Controller{
                 }
             }
         }
+        // dd($details);
     }
-            return view('pokemons.detalles', compact('pokemon', 'description', 'types', 'debilidades'));
+            return view('pokemons.detalles', compact('pokemon', 'description', 'types', 'debilidades', 'nextPokemon', 'prevPokemon'));
         }else{
             return response()->json(['error'=>'No se pudo obtener información del Pokémon'], $response->status());
         }
     }
+
+
+    // ----------obtener pokemon buscandolo por el input--------------------------------
+
+    public function buscar(Request $request){
+        $nombre = $request->input('nombre');
+
+        // Realiza la lógica de búsqueda en la API aquí
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$nombre}");
+
+        if ($response->successful()) {
+            $pokemon = $response->json();
+
+            return view('pokemons.index', compact('pokemon'));
+        } else {
+            return response()->json(['error' => 'No se pudo obtener información del Pokémon'], $response->status());
+        }
+    }
     
+
+    // ----------obtener pokemon para navegacion-------------------------
+
+    private function getAdjacentPokemon($currentId, $direction = 'next'){
+        $offset = ($direction == 'next') ? 1 : -1;
+        $adjacentId = $currentId + $offset;
+
+        // Obtén la información del Pokémon siguiente o anterior
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$adjacentId}");
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        return null;
+    }
+
 
 }
