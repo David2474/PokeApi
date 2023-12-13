@@ -72,7 +72,7 @@
 @endif
     <!-- INICIO DE NAVEGACION -->
 
-    <div class="flex justify-between border-t border-gray-200 bg-[#F5F8FA] mt-[42px] px-4 py-3 sm:px-6">
+<div class="flex justify-between border-t border-gray-200 bg-[#F5F8FA] mt-[42px] px-4 py-3 sm:px-6">
         <div class="flex flex-1 justify-between sm:hidden">
             @if ($pagination->previousPageUrl())
                 <a href="{{ $pagination->previousPageUrl() }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Anterior</a>
@@ -92,7 +92,7 @@
                 </p>
             </div>
 
-            <div>
+<div>
     <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
         @if ($pagination->previousPageUrl())
             <a href="{{ $pagination->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 transition ease-in-out duration-150">

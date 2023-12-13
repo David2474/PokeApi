@@ -8,26 +8,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PokemonController extends Controller{
 
-    public function index(Request $request)
-    {
-        $nombre = $request->input('nombre');
+    public function index(){
         $limit = 8;
-        $page = $request->input('page', 1);
-    
-        // Si se proporciona un nombre, realiza la búsqueda
-        if ($nombre) {
-            $pokemon = $this->buscarPokemon($nombre);
-    
-            if ($pokemon) {
-                // Muestra los detalles del Pokémon encontrado
-                return view('pokemons.index', compact('pokemon'));
-            } else {
-                return response()->json(['error' => 'No se pudo encontrar el Pokémon.'], 404);
-            }
-        }
+        $page = request()->input('page', 1);
     
         // Si no se proporciona un nombre, obtén la lista de Pokémon para mostrar
-        $response = Http::get("https://pokeapi.co/api/v2/pokemon", [
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon?limit=100", [
             'limit' => $limit,
             'offset' => ($page - 1) * $limit,
         ]);
@@ -76,17 +62,7 @@ class PokemonController extends Controller{
         }
     }
 
-private function buscarPokemon($nombre)
-    {
-        // Lógica para buscar el Pokémon por nombre o número (id) en la API
-        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$nombre}");
 
-        if ($response->successful()) {
-            return $response->json();
-        } else {
-            return null; // Retorna null si no se encuentra el Pokémon
-        }
-    }
 
     // --------------------------
     
