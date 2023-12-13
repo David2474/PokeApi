@@ -8,12 +8,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PokemonController extends Controller{
 
-    public function index(){
-        $limit = 8;
-        $page = request()->input('page', 1);
+    public function index(Request $request)
+    {
+
+        $limit = 16;
+        $page = $request->input('page', 1);
+    
     
         // Si no se proporciona un nombre, obtén la lista de Pokémon para mostrar
-        $response = Http::get("https://pokeapi.co/api/v2/pokemon?limit=100", [
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon", [
             'limit' => $limit,
             'offset' => ($page - 1) * $limit,
         ]);
@@ -137,7 +140,20 @@ class PokemonController extends Controller{
 
     // ----------obtener pokemon buscandolo por el input--------------------------------
 
+    public function buscar(Request $request){
+        $nombre = $request->input('nombre');
 
+        // Realiza la lógica de búsqueda en la API aquí
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$nombre}");
+
+        if ($response->successful()) {
+            $pokemon = $response->json();
+
+            return view('pokemons.index', compact('pokemon'));
+        } else {
+            return response()->json(['error' => 'No se pudo obtener información del Pokémon'], $response->status());
+        }
+    }
     
 
     // ----------obtener pokemon para navegacion-------------------------

@@ -11,57 +11,22 @@
 
     <div class="grid grid-cols-12 mt-[47px] mb-[32px]">
        
-        <form id="formBuscar" action="{{ route('index')  }}" method="GET" class="col-start-2 col-span-3">
+        <form id="formBuscar"  method="GET" class="col-start-2 col-span-3">
             <p class="font-[geologica] text-[18px] mb-[3px] text-[#060D33]">Nombre o número</p>
             <input name="nombre" id="nombre" required class="border border-[#D1D5DB] h-[50px] w-[346px] rounded-[10px]" type="text">
         </form>
-
     </div>
 
-    @if(isset($pokemon) && isset($pokemon['image']))
-
-<!-- Muestra detalles del Pokémon encontrado -->
-
-<div class="flex justify-center flex-wrap items-center">
-
-    <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
-
-        <div>
-            <img src="{{ $pokemon['image'] }}" class="w-[212px] h-[212px]" alt="">
-        </div>
-
-        <div class="flex flex-col justify-center w-[212px]">
-            <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{ $pokemon['id'] }}</p>
-            <p class="first-letter:uppercase text-[22px] font-[geologica]">{{ $pokemon['name'] }}</p>
-            <div>
-                <x-types :pokemon="$pokemon" />
-            </div>
-        </div>
-
-    </a>
-
-</div>
-
-@else
-    
 
 <div class="flex justify-center flex-wrap items-center">
     @foreach ($list as $pokemon)
         <a href="{{ route('detalles', $pokemon['id']) }}" class="flex justify-center flex-col items-center mx-3 bg-white my-3 h-[333px] rounded-md w-1/5 ded-[12px] shadow-nv hover:border hover:border-[#3A72F5] transition-transform hover:transform hover:-translate-y-3"> 
             <div>
-                @if(isset($pokemon['image']))
-                    <img src="{{ $pokemon['image'] }}" class="w-[212px] h-[212px]" alt="">
-                @else
-                    <p>Imagen no disponible</p>
-                @endif
+                <img src="{{ $pokemon['image'] }}" class="w-[212px] h-[212px]" alt="">
             </div>
             <div class="flex flex-col justify-center w-[212px]">
-                @if(isset($pokemon['id']))
-                    <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{ $pokemon['id'] }}</p>
-                @endif
-                @if(isset($pokemon['name']))
-                    <p class="first-letter:uppercase text-[22px] font-[geologica]">{{ $pokemon['name'] }}</p>
-                @endif
+                <p class="opacity-50 font-[geologica] text-[15px]">No: 000{{ $pokemon['id'] }}</p>
+                <p class="first-letter:uppercase text-[22px] font-[geologica]">{{ $pokemon['name'] }}</p>
                 <div>
                     <x-types :pokemon="$pokemon" />
                 </div>
@@ -69,7 +34,7 @@
         </a>
     @endforeach
 </div>
-@endif
+
     <!-- INICIO DE NAVEGACION -->
 
 <div class="flex justify-between border-t border-gray-200 bg-[#F5F8FA] mt-[42px] px-4 py-3 sm:px-6">
