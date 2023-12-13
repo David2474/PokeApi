@@ -8,69 +8,85 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PokemonController extends Controller{
 
-    
-    public function index(){
-
+    public function index(Request $request)
+    {
+        $nombre = $request->input('nombre');
         $limit = 8;
-        $page = request()->input('page', 1);
-
+        $page = $request->input('page', 1);
+    
+        // Si se proporciona un nombre, realiza la búsqueda
+        if ($nombre) {
+            $pokemon = $this->buscarPokemon($nombre);
+    
+            if ($pokemon) {
+                // Muestra los detalles del Pokémon encontrado
+                return view('pokemons.index', compact('pokemon'));
+            } else {
+                return response()->json(['error' => 'No se pudo encontrar el Pokémon.'], 404);
+            }
+        }
+    
+        // Si no se proporciona un nombre, obtén la lista de Pokémon para mostrar
         $response = Http::get("https://pokeapi.co/api/v2/pokemon", [
             'limit' => $limit,
             'offset' => ($page - 1) * $limit,
         ]);
-
-     if($response->successful()){
-        $data = $response->json();
-         $list = $data['results'];
-
-        //  dd($data);
-
-        foreach ($list as &$pokemon) {
-            $pokemonDetails = Http::get($pokemon['url'])->json();
-            $pokemon['image'] = $pokemonDetails['sprites']['other']['official-artwork']['front_default'];
-            $pokemon['id'] = $pokemonDetails['id'];
-            // dd($list);
-
-            $types = [];
-            foreach ($pokemonDetails['types'] as $typeData) {
-
-                // Obtener el nombre del tipo en español haciendo una solicitud a la API de tipos
-                $typeDetailsResponse = Http::get($typeData['type']['url']);
-                if($typeDetailsResponse->successful()){
-                    $typeDetails = $typeDetailsResponse->json();
-                    $typeNames = $typeDetails['names'];
-                }
-                foreach($typeNames as $typeName){
-                    if($typeName['language']['name'] === 'es'){
-                        $types[] = $typeName['name'];
-                        break;
+    
+        if ($response->successful()) {
+            $data = $response->json();
+            $list = $data['results'];
+    
+            foreach ($list as &$pokemon) {
+                $pokemonDetails = Http::get($pokemon['url'])->json();
+                $pokemon['image'] = $pokemonDetails['sprites']['other']['official-artwork']['front_default'];
+                $pokemon['id'] = $pokemonDetails['id'];
+    
+                $types = [];
+                foreach ($pokemonDetails['types'] as $typeData) {
+                    $typeDetailsResponse = Http::get($typeData['type']['url']);
+                    if ($typeDetailsResponse->successful()) {
+                        $typeDetails = $typeDetailsResponse->json();
+                        $typeNames = $typeDetails['names'];
+                    }
+                    foreach ($typeNames as $typeName) {
+                        if ($typeName['language']['name'] === 'es') {
+                            $types[] = $typeName['name'];
+                            break;
+                        }
                     }
                 }
+                $pokemon['types'] = $types;
             }
-            $pokemon['types'] = $types;
-            // dd($pokemon);
-        }
-        
-        $perPage = $limit;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage('page') ?: 1;
-        $items = array_slice($pokemonDetails, ($currentPage - 1) * $perPage, $perPage);
-
-        $pagination = new LengthAwarePaginator(
-            $items,
-            count($pokemonDetails),
-            $perPage,
-            $currentPage
-        );
-        // dd($pagination);
-        return view('pokemons.index', compact('list', 'page', 'pagination'));
-     }else{
-
-        return response()->json(['error' => 'No se pudo obtener información del Pokémon'], $response->status());
-     }
-        
-    }    
-     
     
+            // Crear una colección paginada a partir de la lista de Pokémon
+            $perPage = $limit;
+            $currentPage = LengthAwarePaginator::resolveCurrentPage('page') ?: 1;
+            $items = array_slice($list, ($currentPage - 1) * $perPage, $perPage);
+    
+            $pagination = new LengthAwarePaginator(
+                $items,
+                count($list),
+                $perPage,
+                $currentPage
+            );
+    
+            return view('pokemons.index', compact('list', 'page', 'pagination'));
+        } else {
+            return response()->json(['error' => 'No se pudo obtener información de Pokémon.'], $response->status());
+        }
+    }
+
+private function buscarPokemon($nombre)
+    {
+        // Lógica para buscar el Pokémon por nombre o número (id) en la API
+        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$nombre}");
+
+        if ($response->successful()) {
+            return $response->json();
+        } else {
+            return null; // Retorna null si no se encuentra el Pokémon
+        }
+    }
 
     // --------------------------
     
@@ -145,20 +161,7 @@ class PokemonController extends Controller{
 
     // ----------obtener pokemon buscandolo por el input--------------------------------
 
-    public function buscar(Request $request){
-        $nombre = $request->input('nombre');
 
-        // Realiza la lógica de búsqueda en la API aquí
-        $response = Http::get("https://pokeapi.co/api/v2/pokemon/{$nombre}");
-
-        if ($response->successful()) {
-            $pokemon = $response->json();
-
-            return view('pokemons.index', compact('pokemon'));
-        } else {
-            return response()->json(['error' => 'No se pudo obtener información del Pokémon'], $response->status());
-        }
-    }
     
 
     // ----------obtener pokemon para navegacion-------------------------
